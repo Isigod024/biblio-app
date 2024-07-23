@@ -7,7 +7,8 @@ export const metadata = {
         title: 'Connexion | biblio-app',
         description: 'Page de Connexion',
         images: ['./react.webp']
-    }
+    },
+    manifest: './manifest.webmanifest'
 }
 
 export default function Page() {

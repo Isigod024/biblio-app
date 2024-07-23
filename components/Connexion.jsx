@@ -6,7 +6,7 @@ export default function Connexion() {
     const [reponse, setReponse] = useState(''); //Pour contenir la reponse du serveur
     const {
         register,
-        handleSubmit,
+        handleSubmit, getValues,
         formState: { errors }
     } = useForm({
         defaultValues: {
@@ -14,9 +14,28 @@ export default function Connexion() {
             courriel: ''
         }
     });
+ 
+    const onSubmit = async () => {
+        const values = getValues();
+        try {
+            const response = await fetch(`/api/connexion?courriel=${values.courriel}&password=${values.password}`);
+ 
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data);
+                setReponse("Connecte ! "+data.email);
+            } else {
+                setReponse("User non connu");
+            }
+        } catch (error) {
+            console.error("Erreur lors de la tentative : ", error);
+            setReponse("Erreur lors de la tentative");
+        }
+    }
+ 
     return <>
         <form className={styles.form}
-            onSubmit={handleSubmit(() => setReponse("Message reçu avec succès!"))}>
+            onSubmit={handleSubmit(onSubmit)}>
             <label>
                 Courriel:
                 <input
